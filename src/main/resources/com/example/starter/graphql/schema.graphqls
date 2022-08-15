@@ -1,0 +1,109 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type PageInfo {
+    hasPreviousPage: Boolean!
+    hasNextPage: Boolean!
+    startCursor: String!
+    endCursor: String!
+}
+
+type Domain {
+    id: ID!
+    domainName: String!
+    enabled: Boolean
+}
+
+type DomainEdge {
+    node: Domain!
+    cursor: String!
+}
+
+type DomainConnection {
+    edges: [DomainEdge!]!
+    pageInfo: PageInfo
+}
+
+type User {
+    id: ID!
+    name: String!
+}
+
+type UserEdge {
+    node: User!
+    cursor: String!
+}
+
+type UserConnection {
+    edges: [UserEdge!]!
+    pageInfo: PageInfo
+}
+
+type Tenant {
+    id: ID!
+    name: String!
+    users(
+        first: Int
+        after: String
+        last: Int
+        before: String
+    ): UserConnection
+    domains(
+        first: Int
+        after: String
+        last: Int
+        before: String
+    ): DomainConnection
+}
+
+type TenantEdge {
+    node: Tenant!
+    cursor: String!
+}
+
+type TenantConnection {
+    edges: [TenantEdge!]!
+    pageInfo: PageInfo
+}
+
+type Query {
+    hello: String!
+    tenant(tenantId: ID!): Tenant
+    tenants(
+        first: Int
+        after: String
+        last: Int
+        before: String
+    ): TenantConnection
+}
+
+input AddTenantInput {
+    name: String!
+}
+
+type AddTenantResult {
+    tenant: Tenant
+}
+
+type AdminMutation {
+    addTenant(input: AddTenantInput): AddTenantResult
+}
+
+input AddUserInput {
+    name: String!
+}
+
+type AddUserResult {
+    user: User
+}
+
+type TenantMutation {
+    addUser(input: AddUserInput): AddUserResult
+}
+
+type Mutation {
+    adminMutation: AdminMutation
+    tenantMutation(tenantId: ID!): TenantMutation
+}
