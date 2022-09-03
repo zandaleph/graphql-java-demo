@@ -1,5 +1,6 @@
 package com.example.starter
 
+import com.example.starter.db.HibernateModule
 import com.example.starter.graphql.DaggerGraphQLComponent
 import io.vertx.core.http.HttpServer
 import io.vertx.ext.web.Router
@@ -12,14 +13,13 @@ import io.vertx.kotlin.coroutines.await
 import mu.KotlinLogging
 
 class MainVerticle : CoroutineVerticle() {
-    companion object {
-        val logger = KotlinLogging.logger { }
-    }
 
-    lateinit var server: HttpServer
+    private lateinit var server: HttpServer
 
     override suspend fun start() {
-        val component = DaggerGraphQLComponent.create()
+        val component = DaggerGraphQLComponent.builder()
+            .hibernateModule(HibernateModule(true))
+            .build()
         val router = Router.router(vertx)
 
         router.route("/graphql")

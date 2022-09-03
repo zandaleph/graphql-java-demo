@@ -10,4 +10,10 @@ import javax.inject.Singleton
 interface GraphQLComponent {
     fun graphQL(): GraphQL
     fun rootDTO(): RootDTO
+
+    @Component.Builder
+    interface Builder {
+        fun hibernateModule(hibernateModule: HibernateModule): Builder
+        fun build(): GraphQLComponent
+    }
 }

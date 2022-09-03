@@ -11,7 +11,7 @@ import java.util.Properties
 import javax.inject.Singleton
 
 @Module
-class HibernateModule {
+class HibernateModule(private val showSql: Boolean = false) {
 
     @Provides
     @Singleton
@@ -25,7 +25,7 @@ class HibernateModule {
                     "hibernate.connection.password" to "",
                     "hibernate.hbm2ddl.auto" to "create-drop",
                     "hibernate.dialect" to "org.hibernate.dialect.H2Dialect",
-                    "hibernate.show_sql" to "true"
+                    "hibernate.show_sql" to (if(showSql) "true" else "false"),
                 )
             )
         }
