@@ -1,7 +1,7 @@
 package com.example.starter.graphql.mutation
 
 import com.example.starter.db.TenantDao
-import com.example.starter.db.TenantEntity
+import com.example.starter.db.entity.TenantEntity
 import com.example.starter.graphql.node.NodeDTO
 import com.example.starter.graphql.query.TenantComponent
 import com.example.starter.graphql.query.TenantModule
@@ -27,7 +27,6 @@ class MutationDTO @Inject constructor(
         return CoroutineScope(Dispatchers.IO).async {
             val graphQlId = env.getArgument<String>("tenantId")
             val (_, tenantId) = NodeDTO.parseId(graphQlId)
-            val id = UUID.fromString(tenantId)
             val session = sessionFactory.openSession()
             val tenantDao = TenantDao(session)
             val tenant =

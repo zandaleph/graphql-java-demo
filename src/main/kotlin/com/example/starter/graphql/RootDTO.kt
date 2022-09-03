@@ -1,7 +1,9 @@
 package com.example.starter.graphql
 
 import com.example.starter.graphql.connection.ConnectionDTO
-import com.example.starter.graphql.mutation.MutationDTO
+import com.example.starter.graphql.mutation.AdminMutationDTO
+import com.example.starter.graphql.mutation.MutationComponent
+import com.example.starter.graphql.mutation.MutationModule
 import com.example.starter.graphql.mutation.TenantMutationDTO
 import com.example.starter.graphql.query.QueryComponent
 import com.example.starter.graphql.query.QueryModule
@@ -13,7 +15,7 @@ import javax.inject.Provider
 
 class RootDTO @Inject constructor(
     private val queryComponentProvider: Provider<QueryComponent.Builder>,
-    private val mutationDTO: MutationDTO
+    private val mutationComponentProvider: Provider<MutationComponent.Builder>,
 ) {
 
     // Query methods
@@ -34,8 +36,12 @@ class RootDTO @Inject constructor(
 
     // Mutation
     fun getTenantMutation(env: DataFetchingEnvironment): CompletionStage<TenantMutationDTO> {
+        val mutationDTO = mutationComponentProvider.get().mutationModule(MutationModule()).build().mutationDTO()
         return mutationDTO.getTenantMutation(env)
     }
 
-    val adminMutation = mutationDTO.adminMutation
+    fun getAdminMutation(): AdminMutationDTO {
+        val mutationDTO = mutationComponentProvider.get().mutationModule(MutationModule()).build().mutationDTO()
+        return mutationDTO.adminMutation
+    }
 }

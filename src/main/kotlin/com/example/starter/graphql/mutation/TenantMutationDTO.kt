@@ -1,8 +1,8 @@
 package com.example.starter.graphql.mutation
 
-import com.example.starter.db.TenantEntity
+import com.example.starter.db.entity.TenantEntity
 import com.example.starter.db.UserDao
-import com.example.starter.db.UserEntity
+import com.example.starter.db.entity.UserEntity
 import com.example.starter.graphql.query.UserDTO
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.CoroutineScope

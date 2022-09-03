@@ -20,6 +20,7 @@ val vertxVersion = "4.3.3"
 val junitJupiterVersion = "5.7.0"
 val daggerVersion = "2.43.2"
 val loginjectVersion = "1.1.0"
+val hibernateVersion = "6.1.2.Final"
 
 val mainVerticleName = "com.example.starter.MainVerticle"
 val launcherClassName = "io.vertx.core.Launcher"
@@ -42,7 +43,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4")
 
-    implementation("org.hibernate:hibernate-core:6.1.2.Final")
+    implementation("org.hibernate:hibernate-core:$hibernateVersion")
+    kapt("org.hibernate.orm:hibernate-jpamodelgen:$hibernateVersion")
     implementation("com.h2database:h2:2.1.214")
 
     implementation("org.loginject:loginject-api:$loginjectVersion")

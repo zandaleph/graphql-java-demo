@@ -1,6 +1,6 @@
 package com.example.starter.graphql.query
 
-import com.example.starter.db.UserEntity
+import com.example.starter.db.entity.UserEntity
 import com.example.starter.graphql.node.NodeDTO
 
 class UserDTO(

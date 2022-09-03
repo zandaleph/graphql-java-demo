@@ -1,5 +1,6 @@
 package com.example.starter.graphql
 
+import com.example.starter.graphql.mutation.MutationComponent
 import com.example.starter.graphql.query.QueryComponent
 import dagger.Module
 import dagger.Provides
@@ -9,7 +10,7 @@ import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
 import mu.KotlinLogging
 
-@Module(subcomponents = [QueryComponent::class])
+@Module(subcomponents = [QueryComponent::class, MutationComponent::class])
 class GraphQLModule {
 
     companion object {

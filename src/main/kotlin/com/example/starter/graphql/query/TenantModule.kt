@@ -1,6 +1,6 @@
 package com.example.starter.graphql.query
 
-import com.example.starter.db.TenantEntity
+import com.example.starter.db.entity.TenantEntity
 import dagger.Module
 import dagger.Provides
 

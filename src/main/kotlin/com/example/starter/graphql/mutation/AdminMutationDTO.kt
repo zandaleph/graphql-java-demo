@@ -1,7 +1,7 @@
 package com.example.starter.graphql.mutation
 
 import com.example.starter.db.TenantDao
-import com.example.starter.db.TenantEntity
+import com.example.starter.db.entity.TenantEntity
 import com.example.starter.graphql.query.TenantDTO
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.CoroutineScope

@@ -1,5 +1,7 @@
 package com.example.starter.db
 
+import com.example.starter.db.entity.TenantEntity
+import com.example.starter.db.entity.UserEntity
 import dagger.Module
 import dagger.Provides
 import org.hibernate.SessionFactory
@@ -32,6 +34,7 @@ class HibernateModule {
             .build()
         val metadata = MetadataSources(serviceRegistry)
             .addAnnotatedClass(TenantEntity::class.java)
+            .addAnnotatedClass(UserEntity::class.java)
             .metadataBuilder
             .build()
         return metadata.sessionFactoryBuilder.build()

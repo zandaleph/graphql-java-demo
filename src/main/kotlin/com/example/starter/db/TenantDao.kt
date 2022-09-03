@@ -1,5 +1,6 @@
 package com.example.starter.db
 
+import com.example.starter.db.entity.TenantEntity
 import org.hibernate.Session
 import java.util.UUID
 

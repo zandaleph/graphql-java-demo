@@ -1,7 +1,7 @@
 package com.example.starter.graphql.query
 
 import com.example.starter.db.TenantDao
-import com.example.starter.db.TenantEntity
+import com.example.starter.db.entity.TenantEntity
 import com.example.starter.graphql.connection.ConnectionDTO
 import com.example.starter.graphql.connection.EdgeDTO
 import com.example.starter.graphql.connection.PageInfoDTO
@@ -22,21 +22,14 @@ class QueryDTO @Inject constructor(
     private val sessionFactory: SessionFactory,
     private val tenantComponentProvider: Provider<TenantComponent.Builder>
 ) {
-
-    companion object {
-        private val logger = KotlinLogging.logger { }
-    }
-
     val hello = "world"
 
     fun getTenant(env: DataFetchingEnvironment): CompletionStage<TenantDTO> {
         return CoroutineScope(Dispatchers.IO).async {
             val graphQlId = env.getArgument<String>("tenantId")
             val (_, tenantId) = NodeDTO.parseId(graphQlId)
-            val id = UUID.fromString(tenantId)
             val session = sessionFactory.openSession()
             val tenantDao = TenantDao(session)
-            logger.info { "About to call tenantDao.getTenant($id), session: $session" }
             val tenant =
                 tenantDao.getTenant(UUID.fromString(tenantId)) ?: throw NoSuchElementException(graphQlId)
             tenantEntityToDTO(tenant)

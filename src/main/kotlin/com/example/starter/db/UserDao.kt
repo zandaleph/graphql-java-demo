@@ -1,5 +1,7 @@
 package com.example.starter.db
 
+import com.example.starter.db.entity.TenantEntity
+import com.example.starter.db.entity.UserEntity
 import org.hibernate.Session
 
 class UserDao(private val session: Session) {
@@ -15,7 +17,7 @@ class UserDao(private val session: Session) {
                 UserEntity::class.java
             ).setParameter("after", after)
         }
-        return query.setMaxResults(first).resultList
+        return query.setParameter("tenant", tenant).setMaxResults(first).resultList
     }
 
     fun createUser(user: UserEntity) {

@@ -1,6 +1,6 @@
 package com.example.starter.graphql.query
 
-import com.example.starter.db.TenantEntity
+import com.example.starter.db.entity.TenantEntity
 import com.example.starter.db.UserDao
 import com.example.starter.graphql.connection.ConnectionDTO
 import com.example.starter.graphql.connection.EdgeDTO
