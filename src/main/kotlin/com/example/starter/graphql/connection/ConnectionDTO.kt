@@ -11,7 +11,7 @@ class ConnectionDTO<T>(
             cursorFunc: (item: T) -> String,
             nodeFunc: (item: T) -> U
         ): ConnectionDTO<U> =
-            items.take(first).map { EdgeDTO(nodeFunc(it), cursorFunc(it)) }.let { edges ->
+            items.take(first).map { i -> EdgeDTO(nodeFunc(i)) { cursorFunc(i) } }.let { edges ->
                 ConnectionDTO(
                     edges,
                     PageInfoDTO(

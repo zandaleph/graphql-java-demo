@@ -1,6 +1,10 @@
 package com.example.starter.graphql.connection
 
+@Suppress("MemberVisibilityCanBePrivate")
 class EdgeDTO<T>(
     val node: T,
-    val cursor: String
-)
+    private val cursorFunc: (T) -> String
+) {
+
+    val cursor by lazy { cursorFunc(node) }
+}
