@@ -26,9 +26,8 @@ class QueryDTO @Inject constructor(
         return CoroutineScope(Dispatchers.IO).async {
             val graphQlId = env.getArgument<String>("tenantId")
             val (_, tenantId) = NodeDTO.parseId(graphQlId)
-            val session = sessionFactory.openSession()
-            val tenantDao = TenantDao(session)
-            tenantDao.getTenant(UUID.fromString(tenantId))?.toComponent(tenantComponentProvider)?.tenantDto()
+            sessionFactory.fromTransaction { TenantDao(it).getTenant(UUID.fromString(tenantId)) }
+                ?.toComponent(tenantComponentProvider)?.tenantDto()
                 ?: throw NoSuchElementException(graphQlId)
         }.asCompletableFuture()
     }
@@ -37,9 +36,9 @@ class QueryDTO @Inject constructor(
         return CoroutineScope(Dispatchers.IO).async {
             val first = env.getArgument<Int>("first")
             val after = env.getArgument<String>("after")
-            val session = sessionFactory.openSession()
-            val tenantDao = TenantDao(session)
-            val tenants = tenantDao.listTenants(first + 1, after?.let { UUID.fromString(it) })
+            val tenants = sessionFactory.fromTransaction {
+                TenantDao(it).listTenants(first + 1, after?.let { a -> UUID.fromString(a) })
+            }
             ConnectionDTO(
                 tenants.take(first)
                     .map { EdgeDTO(it.toComponent(tenantComponentProvider).tenantDto(), it.id.toString()) },

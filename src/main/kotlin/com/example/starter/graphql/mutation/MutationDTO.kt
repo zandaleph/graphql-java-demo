@@ -25,9 +25,8 @@ class MutationDTO @Inject constructor(
         return CoroutineScope(Dispatchers.IO).async {
             val graphQlId = env.getArgument<String>("tenantId")
             val (_, tenantId) = NodeDTO.parseId(graphQlId)
-            val session = sessionFactory.openSession()
-            val tenantDao = TenantDao(session)
-            tenantDao.getTenant(UUID.fromString(tenantId))?.toComponent(tenantComponentProvider)?.tenantMutationDto()
+            sessionFactory.fromTransaction { TenantDao(it).getTenant(UUID.fromString(tenantId)) }
+                ?.toComponent(tenantComponentProvider)?.tenantMutationDto()
                 ?: throw NoSuchElementException(graphQlId)
         }.asCompletableFuture()
     }

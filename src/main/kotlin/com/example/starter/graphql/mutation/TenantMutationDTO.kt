@@ -1,7 +1,7 @@
 package com.example.starter.graphql.mutation
 
-import com.example.starter.db.entity.TenantEntity
 import com.example.starter.db.UserDao
+import com.example.starter.db.entity.TenantEntity
 import com.example.starter.db.entity.UserEntity
 import com.example.starter.graphql.query.UserDTO
 import graphql.schema.DataFetchingEnvironment
@@ -22,13 +22,8 @@ class TenantMutationDTO @Inject constructor(
         return CoroutineScope(Dispatchers.IO).async {
             val input = env.getArgument<Map<String, String>>("input")
             val entity = UserEntity(tenant, checkNotNull(input["name"]))
-            val session = sessionFactory.openSession()
-            val userDao = UserDao(session)
-            session.transaction.begin()
-            userDao.createUser(entity)
-            session.transaction.commit()
-            val user = UserDTO(entity)
-            AddUserResultDTO(user)
+            sessionFactory.fromTransaction { UserDao(it).createUser(entity) }
+            AddUserResultDTO(UserDTO(entity))
         }.asCompletableFuture()
     }
 }

@@ -23,11 +23,7 @@ class AdminMutationDTO @Inject constructor(
         return CoroutineScope(Dispatchers.IO).async {
             val input = env.getArgument<Map<String, String>>("input")
             val entity = TenantEntity(checkNotNull(input["name"]))
-            val session = sessionFactory.openSession()
-            val tenantDao = TenantDao(session)
-            session.transaction.begin()
-            tenantDao.createTenant(entity)
-            session.transaction.commit()
+            sessionFactory.fromTransaction { TenantDao(it).createTenant(entity) }
             AddTenantResultDTO(entity.toComponent(tenantComponentProvider).tenantDto())
         }.asCompletableFuture()
     }

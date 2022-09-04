@@ -28,9 +28,7 @@ class TenantDTO @Inject constructor(
         return CoroutineScope(Dispatchers.IO).async {
             val first = env.getArgument<Int>("first")
             val after = env.getArgument<String>("after")
-            val session = sessionFactory.openSession()
-            val userDao = UserDao(session)
-            val users = userDao.listUsersForTenant(tenant, first + 1, after)
+            val users = sessionFactory.fromTransaction { UserDao(it).listUsersForTenant(tenant, first + 1, after) }
             ConnectionDTO(
                 users.take(first).map { EdgeDTO(UserDTO(it), it.name.toString()) },
                 PageInfoDTO(
