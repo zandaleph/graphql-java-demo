@@ -1,10 +1,9 @@
 package com.example.starter.graphql.mutation
 
 import com.example.starter.db.TenantDao
-import com.example.starter.db.entity.TenantEntity
 import com.example.starter.graphql.node.NodeDTO
 import com.example.starter.graphql.query.TenantComponent
-import com.example.starter.graphql.query.TenantModule
+import com.example.starter.graphql.query.toComponent
 import graphql.schema.DataFetchingEnvironment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +19,6 @@ class MutationDTO @Inject constructor(
     private val sessionFactory: SessionFactory,
     val adminMutation: AdminMutationDTO,
     private val tenantComponentProvider: Provider<TenantComponent.Builder>
-
 ) {
 
     fun getTenantMutation(env: DataFetchingEnvironment): CompletionStage<TenantMutationDTO> {
@@ -29,15 +27,8 @@ class MutationDTO @Inject constructor(
             val (_, tenantId) = NodeDTO.parseId(graphQlId)
             val session = sessionFactory.openSession()
             val tenantDao = TenantDao(session)
-            val tenant =
-                tenantDao.getTenant(UUID.fromString(tenantId)) ?: throw NoSuchElementException(graphQlId)
-            tenantEntityToDTO(tenant)
+            tenantDao.getTenant(UUID.fromString(tenantId))?.toComponent(tenantComponentProvider)?.tenantMutationDto()
+                ?: throw NoSuchElementException(graphQlId)
         }.asCompletableFuture()
-    }
-
-    private fun tenantEntityToDTO(entity: TenantEntity): TenantMutationDTO {
-        val tenantModule = TenantModule(entity)
-        val tenantComponent = tenantComponentProvider.get().tenantModule(tenantModule).build()
-        return tenantComponent.tenantMutationDto()
     }
 }

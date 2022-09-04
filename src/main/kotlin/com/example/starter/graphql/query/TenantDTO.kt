@@ -1,7 +1,7 @@
 package com.example.starter.graphql.query
 
-import com.example.starter.db.entity.TenantEntity
 import com.example.starter.db.UserDao
+import com.example.starter.db.entity.TenantEntity
 import com.example.starter.graphql.connection.ConnectionDTO
 import com.example.starter.graphql.connection.EdgeDTO
 import com.example.starter.graphql.connection.PageInfoDTO
@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.future.asCompletableFuture
-import mu.KotlinLogging
 import org.hibernate.SessionFactory
 import java.util.concurrent.CompletionStage
 import javax.inject.Inject
@@ -23,14 +22,7 @@ class TenantDTO @Inject constructor(
     private val sessionFactory: SessionFactory
 ) : NodeDTO(checkNotNull(tenant.id).toString()) {
 
-    companion object {
-        private val logger = KotlinLogging.logger { }
-    }
-
-    fun getName(): String {
-        logger.info { "Getting name for id: ${tenant.id}" }
-        return checkNotNull(tenant.name)
-    }
+    fun getName() = checkNotNull(tenant.name)
 
     fun getUsers(env: DataFetchingEnvironment): CompletionStage<ConnectionDTO<UserDTO>> {
         return CoroutineScope(Dispatchers.IO).async {
@@ -43,7 +35,7 @@ class TenantDTO @Inject constructor(
                 users.take(first).map { EdgeDTO(UserDTO(it), it.name.toString()) },
                 PageInfoDTO(
                     hasNextPage = users.size > first,
-                    endCursor = users.take(first).lastOrNull()?.name?.toString() ?: ""
+                    endCursor = users.take(first).lastOrNull()?.name ?: ""
                 )
             )
         }.asCompletableFuture()

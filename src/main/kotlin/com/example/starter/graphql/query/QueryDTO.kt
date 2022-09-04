@@ -1,7 +1,6 @@
 package com.example.starter.graphql.query
 
 import com.example.starter.db.TenantDao
-import com.example.starter.db.entity.TenantEntity
 import com.example.starter.graphql.connection.ConnectionDTO
 import com.example.starter.graphql.connection.EdgeDTO
 import com.example.starter.graphql.connection.PageInfoDTO
@@ -11,7 +10,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.future.asCompletableFuture
-import mu.KotlinLogging
 import org.hibernate.SessionFactory
 import java.util.UUID
 import java.util.concurrent.CompletionStage
@@ -30,9 +28,8 @@ class QueryDTO @Inject constructor(
             val (_, tenantId) = NodeDTO.parseId(graphQlId)
             val session = sessionFactory.openSession()
             val tenantDao = TenantDao(session)
-            val tenant =
-                tenantDao.getTenant(UUID.fromString(tenantId)) ?: throw NoSuchElementException(graphQlId)
-            tenantEntityToDTO(tenant)
+            tenantDao.getTenant(UUID.fromString(tenantId))?.toComponent(tenantComponentProvider)?.tenantDto()
+                ?: throw NoSuchElementException(graphQlId)
         }.asCompletableFuture()
     }
 
@@ -44,18 +41,13 @@ class QueryDTO @Inject constructor(
             val tenantDao = TenantDao(session)
             val tenants = tenantDao.listTenants(first + 1, after?.let { UUID.fromString(it) })
             ConnectionDTO(
-                tenants.take(first).map { EdgeDTO(tenantEntityToDTO(it), it.id.toString()) },
+                tenants.take(first)
+                    .map { EdgeDTO(it.toComponent(tenantComponentProvider).tenantDto(), it.id.toString()) },
                 PageInfoDTO(
                     hasNextPage = tenants.size > first,
                     endCursor = tenants.take(first).lastOrNull()?.id?.toString() ?: ""
                 )
             )
         }.asCompletableFuture()
-    }
-
-    private fun tenantEntityToDTO(entity: TenantEntity): TenantDTO {
-        val tenantModule = TenantModule(entity)
-        val tenantComponent = tenantComponentProvider.get().tenantModule(tenantModule).build()
-        return tenantComponent.tenantDto()
     }
 }
