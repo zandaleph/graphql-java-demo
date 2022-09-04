@@ -2,8 +2,6 @@ package com.example.starter.graphql.query
 
 import com.example.starter.db.TenantDao
 import com.example.starter.graphql.connection.ConnectionDTO
-import com.example.starter.graphql.connection.EdgeDTO
-import com.example.starter.graphql.connection.PageInfoDTO
 import com.example.starter.graphql.fetchData
 import com.example.starter.graphql.node.NodeDTO
 import graphql.schema.DataFetchingEnvironment
@@ -32,13 +30,8 @@ class QueryDTO @Inject constructor(
         val tenants = sessionFactory.fromTransaction {
             TenantDao(it).listTenants(first + 1, after?.let { a -> UUID.fromString(a) })
         }
-        ConnectionDTO(
-            tenants.take(first)
-                .map { EdgeDTO(it.toComponent(tenantComponentProvider).tenantDto(), it.id.toString()) },
-            PageInfoDTO(
-                hasNextPage = tenants.size > first,
-                endCursor = tenants.take(first).lastOrNull()?.id?.toString() ?: ""
-            )
-        )
+        ConnectionDTO.fromList(tenants, first, { t -> checkNotNull(t.id).toString() }) {
+            it.toComponent(tenantComponentProvider).tenantDto()
+        }
     }
 }

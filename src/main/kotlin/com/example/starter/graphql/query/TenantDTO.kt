@@ -3,8 +3,6 @@ package com.example.starter.graphql.query
 import com.example.starter.db.UserDao
 import com.example.starter.db.entity.TenantEntity
 import com.example.starter.graphql.connection.ConnectionDTO
-import com.example.starter.graphql.connection.EdgeDTO
-import com.example.starter.graphql.connection.PageInfoDTO
 import com.example.starter.graphql.fetchData
 import com.example.starter.graphql.node.NodeDTO
 import graphql.schema.DataFetchingEnvironment
@@ -24,23 +22,13 @@ class TenantDTO @Inject constructor(
         val first = env.getArgument<Int>("first")
         val after = env.getArgument<String>("after")
         val users = sessionFactory.fromTransaction { UserDao(it).listUsersForTenant(tenant, first + 1, after) }
-        ConnectionDTO(
-            users.take(first).map { EdgeDTO(UserDTO(it), it.name.toString()) },
-            PageInfoDTO(
-                hasNextPage = users.size > first,
-                endCursor = users.take(first).lastOrNull()?.name ?: ""
-            )
-        )
+        ConnectionDTO.fromList(users, first, { u -> checkNotNull(u.name) }) { UserDTO(it) }
     }
 
     fun getDomains(env: DataFetchingEnvironment) = fetchData {
         // placeholder
         delay(500.milliseconds)
-        ConnectionDTO(
-            listOf(
-                EdgeDTO(DomainDTO("1", "${tenant.name}.example.com", true), "1")
-            ),
-            PageInfoDTO()
-        )
+        val domains = listOf(DomainDTO("1", "${tenant.name}.example.com", true))
+        ConnectionDTO.fromList(domains, 10, { d -> d.id }) { it }
     }
 }
