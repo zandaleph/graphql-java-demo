@@ -1,6 +1,5 @@
 package com.example.starter.db.entity
 
-import com.example.starter.db.entity.TenantEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType

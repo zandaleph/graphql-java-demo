@@ -8,18 +8,12 @@ import graphql.GraphQL
 import graphql.schema.idl.RuntimeWiring
 import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
-import mu.KotlinLogging
 
 @Module(subcomponents = [QueryComponent::class, MutationComponent::class])
 class GraphQLModule {
 
-    companion object {
-        val logger = KotlinLogging.logger { }
-    }
-
     @Provides
     fun providesGraphQL(): GraphQL {
-        logger.info("Providing graphql")
         val typeRegistry = SchemaParser().parse(javaClass.getResourceAsStream("schema.graphqls"))
         val wiring = RuntimeWiring.newRuntimeWiring()
             .build()
