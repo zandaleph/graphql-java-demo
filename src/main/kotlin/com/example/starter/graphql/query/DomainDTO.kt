@@ -1,9 +1,12 @@
 package com.example.starter.graphql.query
 
+import com.example.starter.db.entity.DomainEntity
 import com.example.starter.graphql.node.NodeDTO
 
 class DomainDTO(
-    domainId: String,
-    val domainName: String,
-    val enabled: Boolean
-) : NodeDTO(domainId)
+    domain: DomainEntity
+) : NodeDTO(checkNotNull(domain.id).toString()) {
+
+    val domainName = checkNotNull(domain.domainName)
+    val enabled = checkNotNull(domain.enabled)
+}

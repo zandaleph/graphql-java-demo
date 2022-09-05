@@ -1,5 +1,6 @@
 package com.example.starter.db
 
+import com.example.starter.db.entity.DomainEntity
 import com.example.starter.db.entity.TenantEntity
 import com.example.starter.db.entity.UserEntity
 import dagger.Module
@@ -25,7 +26,7 @@ class HibernateModule(private val showSql: Boolean = false) {
                     "hibernate.connection.password" to "",
                     "hibernate.hbm2ddl.auto" to "create-drop",
                     "hibernate.dialect" to "org.hibernate.dialect.H2Dialect",
-                    "hibernate.show_sql" to (if(showSql) "true" else "false"),
+                    "hibernate.show_sql" to (if (showSql) "true" else "false")
                 )
             )
         }
@@ -35,6 +36,7 @@ class HibernateModule(private val showSql: Boolean = false) {
         val metadata = MetadataSources(serviceRegistry)
             .addAnnotatedClass(TenantEntity::class.java)
             .addAnnotatedClass(UserEntity::class.java)
+            .addAnnotatedClass(DomainEntity::class.java)
             .metadataBuilder
             .build()
         return metadata.sessionFactoryBuilder.build()

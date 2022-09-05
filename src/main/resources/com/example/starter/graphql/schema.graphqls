@@ -99,8 +99,18 @@ type AddUserResult {
     user: User
 }
 
+input AddDomainInput {
+    domainName: String!
+    enabled: Boolean
+}
+
+type AddDomainResult {
+    domain: Domain
+}
+
 type TenantMutation {
     addUser(input: AddUserInput): AddUserResult
+    addDomain(input: AddDomainInput): AddDomainResult
 }
 
 type Mutation {
