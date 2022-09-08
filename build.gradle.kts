@@ -17,7 +17,7 @@ repositories {
 }
 
 val vertxVersion = "4.3.3"
-val junitJupiterVersion = "5.7.0"
+val junitJupiterVersion = "5.9.0"
 val daggerVersion = "2.43.2"
 val loginjectVersion = "1.1.0"
 val hibernateVersion = "6.1.2.Final"
@@ -50,9 +50,9 @@ dependencies {
     implementation("org.loginject:loginject-api:$loginjectVersion")
     implementation("org.loginject:loginject-dagger:$loginjectVersion")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
-    implementation("org.slf4j:slf4j-simple:1.7.29")
+    implementation("org.slf4j:slf4j-simple:2.0.0")
 
-    runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-x86_64")
+    runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.80.Final:osx-x86_64")
 
     implementation("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
