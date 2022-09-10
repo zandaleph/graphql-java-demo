@@ -19,7 +19,6 @@ repositories {
 val vertxVersion = "4.3.3"
 val junitJupiterVersion = "5.9.0"
 val daggerVersion = "2.43.2"
-val loginjectVersion = "1.1.0"
 val hibernateVersion = "6.1.2.Final"
 
 val mainVerticleName = "com.example.starter.MainVerticle"
@@ -47,8 +46,6 @@ dependencies {
     kapt("org.hibernate.orm:hibernate-jpamodelgen:$hibernateVersion")
     implementation("com.h2database:h2:2.1.214")
 
-    implementation("org.loginject:loginject-api:$loginjectVersion")
-    implementation("org.loginject:loginject-dagger:$loginjectVersion")
     implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
     implementation("org.slf4j:slf4j-simple:2.0.0")
 
@@ -75,10 +72,10 @@ tasks.withType<Test> {
 
 tasks.withType<JavaExec> {
     environment("VERTXWEB_ENVIRONMENT", "dev")
-    jvmArgs = listOf("-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG")
     args = listOf(
         "run",
         mainVerticleName,
+//        "--java-opts='-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG'",
         "--redeploy=$watchForChange",
         "--launcher-class=$launcherClassName",
         "--on-redeploy=$doOnChange"
