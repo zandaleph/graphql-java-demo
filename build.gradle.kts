@@ -32,6 +32,8 @@ application {
 }
 
 dependencies {
+    implementation(project(":webapp"))
+
     implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
     implementation("io.vertx:vertx-web-graphql")
     implementation("io.vertx:vertx-web")

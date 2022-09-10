@@ -5,12 +5,12 @@ import com.example.starter.graphql.DaggerGraphQLComponent
 import io.vertx.core.http.HttpServer
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.BodyHandler
+import io.vertx.ext.web.handler.StaticHandler
 import io.vertx.ext.web.handler.graphql.GraphQLHandler
 import io.vertx.ext.web.handler.graphql.GraphiQLHandler
 import io.vertx.kotlin.core.http.httpServerOptionsOf
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.coroutines.await
-import mu.KotlinLogging
 
 class MainVerticle : CoroutineVerticle() {
 
@@ -30,6 +30,8 @@ class MainVerticle : CoroutineVerticle() {
                 }
             )
         router.route("/graphiql/*").handler(GraphiQLHandler.create())
+
+        router.route().handler(StaticHandler.create())
 
         server = vertx.createHttpServer(httpServerOptionsOf(port = 8080))
             .requestHandler(router)
