@@ -1,3 +1,4 @@
 rootProject.name = "vertx-graphql-playground"
 
-include("webapp")
+includeBuild("core-webserver")
+includeBuild("login-webapp")

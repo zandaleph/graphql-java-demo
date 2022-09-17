@@ -8,6 +8,9 @@ plugins {
     id("com.github.node-gradle.node") version "3.4.0"
 }
 
+group = "com.example"
+version = "1.0.0-SNAPSHOT"
+
 val npmInstall = tasks.named("npmInstall")
 
 val buildTask = tasks.register<NpmTask>("buildWebapp") {

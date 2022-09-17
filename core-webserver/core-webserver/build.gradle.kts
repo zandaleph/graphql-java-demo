@@ -32,7 +32,7 @@ application {
 }
 
 dependencies {
-    implementation(project(":webapp"))
+    implementation("com.example:login-webapp")
 
     implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
     implementation("io.vertx:vertx-web-graphql")
