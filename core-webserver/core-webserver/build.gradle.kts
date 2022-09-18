@@ -4,13 +4,11 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.7.10"
     application
-    kotlin("kapt") version "1.6.10"
+    kotlin("kapt") version "1.7.10"
+    id("com.example.convention")
 }
-
-group = "com.example"
-version = "1.0.0-SNAPSHOT"
 
 repositories {
     mavenCentral()

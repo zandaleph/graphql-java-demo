@@ -2,14 +2,9 @@ import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
     java
-    // You have to specify the plugin version, for instance
-    // id "com.github.node-gradle.node" version "3.0.0"
-    // This works as is here because we use the plugin source
     id("com.github.node-gradle.node") version "3.4.0"
+    id("com.example.convention")
 }
-
-group = "com.example"
-version = "1.0.0-SNAPSHOT"
 
 val npmInstall = tasks.named("npmInstall")
 
