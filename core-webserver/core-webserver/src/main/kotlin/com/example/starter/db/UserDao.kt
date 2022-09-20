@@ -2,22 +2,20 @@ package com.example.starter.db
 
 import com.example.starter.db.entity.TenantEntity
 import com.example.starter.db.entity.UserEntity
+import com.example.starter.db.entity.UserEntity_
 import org.hibernate.Session
 
 class UserDao(private val session: Session) {
+
     fun listUsersForTenant(tenant: TenantEntity, first: Int = 10, after: String? = null): List<UserEntity> {
-        val query = if (after == null) {
-            session.createSelectionQuery(
-                "SELECT ue FROM UserEntity ue WHERE ue.tenant = :tenant ORDER BY ue.name",
-                UserEntity::class.java
-            )
-        } else {
-            session.createSelectionQuery(
-                "SELECT ue FROM UserEntity ue WHERE ue.tenant = :tenant AND ue.name > :after ORDER BY ue.name",
-                UserEntity::class.java
-            ).setParameter("after", after)
-        }
-        return query.setParameter("tenant", tenant).setMaxResults(first).resultList
+        val builder = session.criteriaBuilder
+        val query = builder.createQuery(UserEntity::class.java)
+        val root = query.from(UserEntity::class.java)
+        query.select(root)
+            .where(builder.equal(root[UserEntity_.tenant], tenant))
+            .orderBy(builder.asc(root[UserEntity_.name]))
+        after?.let { query.where(builder.greaterThan(root[UserEntity_.name], it)) }
+        return session.createQuery(query).setMaxResults(first).resultList
     }
 
     fun createUser(user: UserEntity) {
