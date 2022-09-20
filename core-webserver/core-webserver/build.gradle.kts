@@ -4,9 +4,9 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm")
     application
-    kotlin("kapt") version "1.7.10"
+    kotlin("kapt")
     id("com.example.convention")
 }
 
@@ -31,6 +31,7 @@ application {
 
 dependencies {
     implementation("com.example:login-webapp")
+    implementation(project(":core-entities"))
 
     implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
     implementation("io.vertx:vertx-web-graphql")

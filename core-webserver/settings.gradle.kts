@@ -7,3 +7,4 @@ pluginManagement {
 includeBuild("../login-webapp")
 
 include("core-webserver")
+include("core-entities")
