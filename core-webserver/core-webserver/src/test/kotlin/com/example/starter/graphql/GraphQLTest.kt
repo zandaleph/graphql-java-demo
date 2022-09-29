@@ -90,6 +90,7 @@ class GraphQLTest {
 
         val (receivedNames, _) = (0..2).fold(setOf<String>() to null as String?) { (s, cursor), num ->
             val (users, pageInfo) = listTenantUsersQuery(tenantId, 5, cursor)
+            println(pageInfo)
             assertTrue((num != 2) == pageInfo.hasNextPage)
             s.plus(users.map { it["name"] as String }) to pageInfo.endCursor
         }
@@ -153,6 +154,7 @@ class GraphQLTest {
             mapOf("first" to first, "after" to after)
         )
         val data = result.getData<Map<String, Any>>()
+        println("Here's data: $data")
         return TestConnection.fromMap(data.getObject("tenants"))
     }
 

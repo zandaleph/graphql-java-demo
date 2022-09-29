@@ -1,9 +1,8 @@
 package com.example.starter.graphql.query
 
+import com.example.graphql.schema.NodeDTO
 import com.example.starter.db.TenantDao
-import com.example.starter.graphql.connection.ConnectionDTO
 import com.example.starter.graphql.fetchData
-import com.example.starter.graphql.node.NodeDTO
 import graphql.schema.DataFetchingEnvironment
 import org.hibernate.SessionFactory
 import java.util.UUID
@@ -12,7 +11,7 @@ import javax.inject.Provider
 
 class QueryDTO @Inject constructor(
     private val sessionFactory: SessionFactory,
-    private val tenantComponentProvider: Provider<TenantComponent.Builder>
+    private val tenantComponentProvider: Provider<TenantComponent.Builder>,
 ) {
     val hello = "world"
 
@@ -30,8 +29,6 @@ class QueryDTO @Inject constructor(
         val tenants = sessionFactory.fromTransaction {
             TenantDao(it).listTenants(first + 1, after?.let { a -> UUID.fromString(a) })
         }
-        ConnectionDTO.fromList(tenants, first, { t -> checkNotNull(t.id).toString() }) {
-            it.toComponent(tenantComponentProvider).tenantDto()
-        }
+        TenantConnectionDTO.fromList(tenants.map { it.toComponent(tenantComponentProvider).tenantDto() }, first)
     }
 }

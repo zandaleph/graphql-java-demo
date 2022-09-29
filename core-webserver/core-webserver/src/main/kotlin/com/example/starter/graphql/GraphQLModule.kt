@@ -2,6 +2,7 @@ package com.example.starter.graphql
 
 import com.example.starter.graphql.mutation.MutationComponent
 import com.example.starter.graphql.query.QueryComponent
+import com.expediagroup.graphql.generator.scalars.IDValueUnboxer
 import dagger.Module
 import dagger.Provides
 import graphql.GraphQL
@@ -18,6 +19,8 @@ class GraphQLModule {
         val wiring = RuntimeWiring.newRuntimeWiring()
             .build()
         val schema = SchemaGenerator().makeExecutableSchema(typeRegistry, wiring)
-        return GraphQL.newGraphQL(schema).build()
+        return GraphQL.newGraphQL(schema)
+            .valueUnboxer(IDValueUnboxer())
+            .build()
     }
 }

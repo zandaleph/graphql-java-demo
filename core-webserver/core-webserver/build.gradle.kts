@@ -30,6 +30,7 @@ application {
 }
 
 dependencies {
+    implementation("com.example:graphql-utilities")
     implementation("com.example:login-webapp")
     implementation(project(":core-entities"))
 
@@ -38,6 +39,8 @@ dependencies {
     implementation("io.vertx:vertx-web")
     implementation("io.vertx:vertx-lang-kotlin")
     implementation("io.vertx:vertx-lang-kotlin-coroutines")
+
+    implementation("com.expediagroup:graphql-kotlin-schema-generator:6.2.5")
 
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

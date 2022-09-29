@@ -1,12 +1,12 @@
 package com.example.starter.graphql
 
-import com.example.starter.graphql.connection.ConnectionDTO
 import com.example.starter.graphql.mutation.AdminMutationDTO
 import com.example.starter.graphql.mutation.MutationComponent
 import com.example.starter.graphql.mutation.MutationModule
 import com.example.starter.graphql.mutation.TenantMutationDTO
 import com.example.starter.graphql.query.QueryComponent
 import com.example.starter.graphql.query.QueryModule
+import com.example.starter.graphql.query.TenantConnectionDTO
 import com.example.starter.graphql.query.TenantDTO
 import graphql.schema.DataFetchingEnvironment
 import java.util.concurrent.CompletionStage
@@ -29,7 +29,7 @@ class RootDTO @Inject constructor(
         return queryDTO.getTenant(env)
     }
 
-    fun getTenants(env: DataFetchingEnvironment): CompletionStage<ConnectionDTO<TenantDTO>> {
+    fun getTenants(env: DataFetchingEnvironment): CompletionStage<TenantConnectionDTO> {
         val queryDTO = queryComponentProvider.get().queryModule(QueryModule()).build().queryDTO()
         return queryDTO.getTenants(env)
     }

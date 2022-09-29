@@ -4,7 +4,7 @@ import com.example.starter.db.entity.DomainEntity
 import com.example.starter.graphql.node.NodeDTO
 
 class DomainDTO(
-    domain: DomainEntity
+    internal val domain: DomainEntity,
 ) : NodeDTO(checkNotNull(domain.id).toString()) {
 
     val domainName = checkNotNull(domain.domainName)

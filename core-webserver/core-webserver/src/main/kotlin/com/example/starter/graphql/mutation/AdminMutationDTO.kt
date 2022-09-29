@@ -12,7 +12,7 @@ import javax.inject.Provider
 
 class AdminMutationDTO @Inject constructor(
     private val sessionFactory: SessionFactory,
-    private val tenantComponentProvider: Provider<TenantComponent.Builder>
+    private val tenantComponentProvider: Provider<TenantComponent.Builder>,
 ) {
 
     fun getAddTenant(env: DataFetchingEnvironment) = fetchData {
