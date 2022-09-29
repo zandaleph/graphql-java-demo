@@ -1,5 +1,3 @@
-rootProject.name = "core-webserver-project"
-
 pluginManagement {
     includeBuild("../build-logic")
 }
