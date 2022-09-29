@@ -69,6 +69,8 @@ tasks.withType<Test> {
     testLogging {
         events = setOf(PASSED, SKIPPED, FAILED)
     }
+    systemProperty("org.jboss.logging.provider", "slf4j")
+//    systemProperty("org.slf4j.simpleLogger.defaultLogLevel", "DEBUG")
 }
 
 tasks.withType<JavaExec> {

@@ -11,10 +11,12 @@ class DomainDao(private val session: Session) {
         val builder = session.criteriaBuilder
         val query = builder.createQuery(DomainEntity::class.java)
         val root = query.from(DomainEntity::class.java)
+        val predicate = builder.equal(root[DomainEntity_.tenant], tenant).let { pred ->
+            after?.let { builder.and(pred, builder.greaterThan(root[DomainEntity_.domainName], it)) } ?: pred
+        }
         query.select(root)
-            .where(builder.equal(root[DomainEntity_.tenant], tenant))
+            .where(predicate)
             .orderBy(builder.asc(root[DomainEntity_.domainName]))
-        after?.let { query.where(builder.greaterThan(root[DomainEntity_.domainName], it)) }
         return session.createQuery(query).setMaxResults(first).resultList
     }
 
