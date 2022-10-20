@@ -1,5 +1,6 @@
 package com.example.starter.db
 
+import com.example.starter.auth.db.entity.DbSessionEntity
 import com.example.starter.db.entity.DomainEntity
 import com.example.starter.db.entity.TenantEntity
 import com.example.starter.db.entity.UserEntity
@@ -37,6 +38,7 @@ class HibernateModule(private val showSql: Boolean = false) {
             .addAnnotatedClass(TenantEntity::class.java)
             .addAnnotatedClass(UserEntity::class.java)
             .addAnnotatedClass(DomainEntity::class.java)
+            .addAnnotatedClass(DbSessionEntity::class.java)
             .metadataBuilder
             .build()
         return metadata.sessionFactoryBuilder.build()
