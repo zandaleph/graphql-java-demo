@@ -23,7 +23,7 @@ val mainVerticleName = "com.example.starter.MainVerticle"
 val launcherClassName = "io.vertx.core.Launcher"
 
 val watchForChange = "src/**/*"
-val doOnChange = "$projectDir/gradlew classes"
+val doOnChange = "$projectDir/../gradlew :core-webserver:core-webserver:classes"
 
 application {
     mainClass.set(launcherClassName)
