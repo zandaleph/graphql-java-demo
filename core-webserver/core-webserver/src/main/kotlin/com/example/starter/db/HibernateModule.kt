@@ -1,9 +1,5 @@
 package com.example.starter.db
 
-import com.example.starter.auth.db.entity.DbSessionEntity
-import com.example.starter.db.entity.DomainEntity
-import com.example.starter.db.entity.TenantEntity
-import com.example.starter.db.entity.UserEntity
 import dagger.Module
 import dagger.Provides
 import org.hibernate.SessionFactory
@@ -17,7 +13,7 @@ class HibernateModule(private val showSql: Boolean = false) {
 
     @Provides
     @Singleton
-    fun providesSessionFactory(): SessionFactory {
+    fun providesSessionFactory(@HibernateEntities entities: Set<@JvmSuppressWildcards Class<*>>): SessionFactory {
         val properties = Properties().apply {
             putAll(
                 mapOf(
@@ -35,10 +31,7 @@ class HibernateModule(private val showSql: Boolean = false) {
             .applySettings(properties)
             .build()
         val metadata = MetadataSources(serviceRegistry)
-            .addAnnotatedClass(TenantEntity::class.java)
-            .addAnnotatedClass(UserEntity::class.java)
-            .addAnnotatedClass(DomainEntity::class.java)
-            .addAnnotatedClass(DbSessionEntity::class.java)
+            .apply { entities.forEach { addAnnotatedClass(it) } }
             .metadataBuilder
             .build()
         return metadata.sessionFactoryBuilder.build()

@@ -5,7 +5,7 @@ import org.hibernate.SessionFactory
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [HibernateModule::class])
+@Component(modules = [HibernateModule::class, DataModelModule::class])
 interface HibernateTestComponent {
     fun sessionFactory(): SessionFactory
 }
